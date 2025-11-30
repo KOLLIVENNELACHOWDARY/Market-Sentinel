@@ -1,4 +1,4 @@
-# ** **AI Multi-Agent Strategy Platform** **
+# ** **Market-Sentinel** **
 
 ## Overview
 
