@@ -1,0 +1,772 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "57677925",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-30T07:11:22.280925Z",
+     "iopub.status.busy": "2025-11-30T07:11:22.280305Z",
+     "iopub.status.idle": "2025-11-30T07:11:33.819577Z",
+     "shell.execute_reply": "2025-11-30T07:11:33.818400Z",
+     "shell.execute_reply.started": "2025-11-30T07:11:22.280894Z"
+    },
+    "papermill": {
+     "duration": 0.004487,
+     "end_time": "2025-11-30T09:11:29.673090",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:29.668603",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# --**Install ADK**--"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "4a5aef4f",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-30T09:11:29.682166Z",
+     "iopub.status.busy": "2025-11-30T09:11:29.681850Z",
+     "iopub.status.idle": "2025-11-30T09:11:40.689651Z",
+     "shell.execute_reply": "2025-11-30T09:11:40.688466Z"
+    },
+    "papermill": {
+     "duration": 11.014353,
+     "end_time": "2025-11-30T09:11:40.691548",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:29.677195",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Requirement already satisfied: google-adk in /usr/local/lib/python3.11/dist-packages (1.18.0)\r\n",
+      "Collecting google-adk\r\n",
+      "  Downloading google_adk-1.19.0-py3-none-any.whl.metadata (13 kB)\r\n",
+      "Requirement already satisfied: google-genai in /usr/local/lib/python3.11/dist-packages (1.48.0)\r\n",
+      "Collecting google-genai\r\n",
+      "  Downloading google_genai-1.52.0-py3-none-any.whl.metadata (46 kB)\r\n",
+      "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m46.8/46.8 kB\u001b[0m \u001b[31m1.6 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\r\n",
+      "\u001b[?25hRequirement already satisfied: PyYAML<7.0.0,>=6.0.2 in /usr/local/lib/python3.11/dist-packages (from google-adk) (6.0.3)\r\n",
+      "Requirement already satisfied: aiosqlite>=0.21.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (0.21.0)\r\n",
+      "Requirement already satisfied: anyio<5.0.0,>=4.9.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (4.11.0)\r\n",
+      "Requirement already satisfied: authlib<2.0.0,>=1.5.1 in /usr/local/lib/python3.11/dist-packages (from google-adk) (1.6.5)\r\n",
+      "Requirement already satisfied: click<9.0.0,>=8.1.8 in /usr/local/lib/python3.11/dist-packages (from google-adk) (8.3.0)\r\n",
+      "Requirement already satisfied: fastapi<0.119.0,>=0.115.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (0.116.1)\r\n",
+      "Requirement already satisfied: google-api-python-client<3.0.0,>=2.157.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (2.177.0)\r\n",
+      "Requirement already satisfied: google-cloud-aiplatform<2.0.0,>=1.125.0 in /usr/local/lib/python3.11/dist-packages (from google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (1.125.0)\r\n",
+      "Collecting google-cloud-bigquery-storage>=2.0.0 (from google-adk)\r\n",
+      "  Downloading google_cloud_bigquery_storage-2.34.0-py3-none-any.whl.metadata (10 kB)\r\n",
+      "Requirement already satisfied: google-cloud-bigquery>=2.2.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (3.35.1)\r\n",
+      "Requirement already satisfied: google-cloud-bigtable>=2.32.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (2.34.0)\r\n",
+      "Requirement already satisfied: google-cloud-discoveryengine<0.14.0,>=0.13.12 in /usr/local/lib/python3.11/dist-packages (from google-adk) (0.13.12)\r\n",
+      "Requirement already satisfied: google-cloud-secret-manager<3.0.0,>=2.22.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (2.25.0)\r\n",
+      "Requirement already satisfied: google-cloud-spanner<4.0.0,>=3.56.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (3.56.0)\r\n",
+      "Requirement already satisfied: google-cloud-speech<3.0.0,>=2.30.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (2.34.0)\r\n",
+      "Requirement already satisfied: google-cloud-storage<4.0.0,>=3.0.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (3.5.0)\r\n",
+      "Requirement already satisfied: graphviz<1.0.0,>=0.20.2 in /usr/local/lib/python3.11/dist-packages (from google-adk) (0.21)\r\n",
+      "Requirement already satisfied: jsonschema<5.0.0,>=4.23.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (4.25.0)\r\n",
+      "Requirement already satisfied: mcp<2.0.0,>=1.8.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (1.20.0)\r\n",
+      "Requirement already satisfied: opentelemetry-api<=1.37.0,>=1.37.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (1.37.0)\r\n",
+      "Requirement already satisfied: opentelemetry-exporter-gcp-logging<2.0.0,>=1.9.0a0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (1.11.0a0)\r\n",
+      "Requirement already satisfied: opentelemetry-exporter-gcp-monitoring<2.0.0,>=1.9.0a0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (1.11.0a0)\r\n",
+      "Requirement already satisfied: opentelemetry-exporter-gcp-trace<2.0.0,>=1.9.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (1.11.0)\r\n",
+      "Requirement already satisfied: opentelemetry-exporter-otlp-proto-http>=1.36.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (1.37.0)\r\n",
+      "Requirement already satisfied: opentelemetry-resourcedetector-gcp<2.0.0,>=1.9.0a0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (1.11.0a0)\r\n",
+      "Requirement already satisfied: opentelemetry-sdk<=1.37.0,>=1.37.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (1.37.0)\r\n",
+      "Requirement already satisfied: pyarrow>=14.0.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (19.0.1)\r\n",
+      "Requirement already satisfied: pydantic<3.0.0,>=2.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (2.12.4)\r\n",
+      "Requirement already satisfied: python-dateutil<3.0.0,>=2.9.0.post0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (2.9.0.post0)\r\n",
+      "Requirement already satisfied: python-dotenv<2.0.0,>=1.0.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (1.2.1)\r\n",
+      "Requirement already satisfied: requests<3.0.0,>=2.32.4 in /usr/local/lib/python3.11/dist-packages (from google-adk) (2.32.5)\r\n",
+      "Requirement already satisfied: sqlalchemy-spanner>=1.14.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (1.17.1)\r\n",
+      "Requirement already satisfied: sqlalchemy<3.0.0,>=2.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (2.0.41)\r\n",
+      "Requirement already satisfied: starlette<1.0.0,>=0.46.2 in /usr/local/lib/python3.11/dist-packages (from google-adk) (0.47.2)\r\n",
+      "Requirement already satisfied: tenacity<10.0.0,>=9.0.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (9.1.2)\r\n",
+      "Requirement already satisfied: typing-extensions<5,>=4.5 in /usr/local/lib/python3.11/dist-packages (from google-adk) (4.15.0)\r\n",
+      "Requirement already satisfied: tzlocal<6.0,>=5.3 in /usr/local/lib/python3.11/dist-packages (from google-adk) (5.3.1)\r\n",
+      "Requirement already satisfied: uvicorn<1.0.0,>=0.34.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (0.35.0)\r\n",
+      "Requirement already satisfied: watchdog<7.0.0,>=6.0.0 in /usr/local/lib/python3.11/dist-packages (from google-adk) (6.0.0)\r\n",
+      "Requirement already satisfied: websockets<16.0.0,>=15.0.1 in /usr/local/lib/python3.11/dist-packages (from google-adk) (15.0.1)\r\n",
+      "Requirement already satisfied: google-auth<3.0.0,>=2.14.1 in /usr/local/lib/python3.11/dist-packages (from google-genai) (2.38.0)\r\n",
+      "Requirement already satisfied: httpx<1.0.0,>=0.28.1 in /usr/local/lib/python3.11/dist-packages (from google-genai) (0.28.1)\r\n",
+      "Requirement already satisfied: idna>=2.8 in /usr/local/lib/python3.11/dist-packages (from anyio<5.0.0,>=4.9.0->google-adk) (3.11)\r\n",
+      "Requirement already satisfied: sniffio>=1.1 in /usr/local/lib/python3.11/dist-packages (from anyio<5.0.0,>=4.9.0->google-adk) (1.3.1)\r\n",
+      "Requirement already satisfied: cryptography in /usr/local/lib/python3.11/dist-packages (from authlib<2.0.0,>=1.5.1->google-adk) (46.0.3)\r\n",
+      "Requirement already satisfied: httplib2<1.0.0,>=0.19.0 in /usr/local/lib/python3.11/dist-packages (from google-api-python-client<3.0.0,>=2.157.0->google-adk) (0.22.0)\r\n",
+      "Requirement already satisfied: google-auth-httplib2<1.0.0,>=0.2.0 in /usr/local/lib/python3.11/dist-packages (from google-api-python-client<3.0.0,>=2.157.0->google-adk) (0.2.0)\r\n",
+      "Requirement already satisfied: google-api-core!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0,<3.0.0,>=1.31.5 in /usr/local/lib/python3.11/dist-packages (from google-api-python-client<3.0.0,>=2.157.0->google-adk) (2.28.1)\r\n",
+      "Requirement already satisfied: uritemplate<5,>=3.0.1 in /usr/local/lib/python3.11/dist-packages (from google-api-python-client<3.0.0,>=2.157.0->google-adk) (4.2.0)\r\n",
+      "Collecting cachetools<6.0,>=2.0.0 (from google-auth<3.0.0,>=2.14.1->google-genai)\r\n",
+      "  Downloading cachetools-5.5.2-py3-none-any.whl.metadata (5.4 kB)\r\n",
+      "Requirement already satisfied: pyasn1-modules>=0.2.1 in /usr/local/lib/python3.11/dist-packages (from google-auth<3.0.0,>=2.14.1->google-genai) (0.4.2)\r\n",
+      "Requirement already satisfied: rsa<5,>=3.1.4 in /usr/local/lib/python3.11/dist-packages (from google-auth<3.0.0,>=2.14.1->google-genai) (4.9.1)\r\n",
+      "Requirement already satisfied: proto-plus<2.0.0,>=1.22.3 in /usr/local/lib/python3.11/dist-packages (from google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (1.26.1)\r\n",
+      "Requirement already satisfied: protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<7.0.0,>=3.20.2 in /usr/local/lib/python3.11/dist-packages (from google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (6.33.0)\r\n",
+      "Requirement already satisfied: packaging>=14.3 in /usr/local/lib/python3.11/dist-packages (from google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (25.0)\r\n",
+      "Requirement already satisfied: google-cloud-resource-manager<3.0.0,>=1.3.3 in /usr/local/lib/python3.11/dist-packages (from google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (1.14.2)\r\n",
+      "Requirement already satisfied: shapely<3.0.0 in /usr/local/lib/python3.11/dist-packages (from google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (2.1.2)\r\n",
+      "Requirement already satisfied: docstring_parser<1 in /usr/local/lib/python3.11/dist-packages (from google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (0.17.0)\r\n",
+      "Requirement already satisfied: cloudpickle<4.0,>=3.0 in /usr/local/lib/python3.11/dist-packages (from google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (3.1.2)\r\n",
+      "Requirement already satisfied: google-cloud-trace<2 in /usr/local/lib/python3.11/dist-packages (from google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (1.17.0)\r\n",
+      "Requirement already satisfied: google-cloud-logging<4 in /usr/local/lib/python3.11/dist-packages (from google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (3.12.1)\r\n",
+      "Requirement already satisfied: google-cloud-core<3.0.0,>=2.4.1 in /usr/local/lib/python3.11/dist-packages (from google-cloud-bigquery>=2.2.0->google-adk) (2.4.3)\r\n",
+      "Requirement already satisfied: google-resumable-media<3.0.0,>=2.0.0 in /usr/local/lib/python3.11/dist-packages (from google-cloud-bigquery>=2.2.0->google-adk) (2.7.2)\r\n",
+      "Requirement already satisfied: grpcio<2.0.0,>=1.33.2 in /usr/local/lib/python3.11/dist-packages (from google-cloud-bigquery-storage>=2.0.0->google-adk) (1.74.0)\r\n",
+      "Requirement already satisfied: grpc-google-iam-v1<1.0.0,>=0.12.4 in /usr/local/lib/python3.11/dist-packages (from google-cloud-bigtable>=2.32.0->google-adk) (0.14.2)\r\n",
+      "Requirement already satisfied: google-crc32c<2.0.0dev,>=1.5.0 in /usr/local/lib/python3.11/dist-packages (from google-cloud-bigtable>=2.32.0->google-adk) (1.7.1)\r\n",
+      "Requirement already satisfied: sqlparse>=0.4.4 in /usr/local/lib/python3.11/dist-packages (from google-cloud-spanner<4.0.0,>=3.56.0->google-adk) (0.5.3)\r\n",
+      "Requirement already satisfied: grpc-interceptor>=0.15.4 in /usr/local/lib/python3.11/dist-packages (from google-cloud-spanner<4.0.0,>=3.56.0->google-adk) (0.15.4)\r\n",
+      "Requirement already satisfied: certifi in /usr/local/lib/python3.11/dist-packages (from httpx<1.0.0,>=0.28.1->google-genai) (2025.10.5)\r\n",
+      "Requirement already satisfied: httpcore==1.* in /usr/local/lib/python3.11/dist-packages (from httpx<1.0.0,>=0.28.1->google-genai) (1.0.9)\r\n",
+      "Requirement already satisfied: h11>=0.16 in /usr/local/lib/python3.11/dist-packages (from httpcore==1.*->httpx<1.0.0,>=0.28.1->google-genai) (0.16.0)\r\n",
+      "Requirement already satisfied: attrs>=22.2.0 in /usr/local/lib/python3.11/dist-packages (from jsonschema<5.0.0,>=4.23.0->google-adk) (25.4.0)\r\n",
+      "Requirement already satisfied: jsonschema-specifications>=2023.03.6 in /usr/local/lib/python3.11/dist-packages (from jsonschema<5.0.0,>=4.23.0->google-adk) (2025.4.1)\r\n",
+      "Requirement already satisfied: referencing>=0.28.4 in /usr/local/lib/python3.11/dist-packages (from jsonschema<5.0.0,>=4.23.0->google-adk) (0.36.2)\r\n",
+      "Requirement already satisfied: rpds-py>=0.7.1 in /usr/local/lib/python3.11/dist-packages (from jsonschema<5.0.0,>=4.23.0->google-adk) (0.26.0)\r\n",
+      "Requirement already satisfied: httpx-sse>=0.4 in /usr/local/lib/python3.11/dist-packages (from mcp<2.0.0,>=1.8.0->google-adk) (0.4.3)\r\n",
+      "Requirement already satisfied: pydantic-settings>=2.5.2 in /usr/local/lib/python3.11/dist-packages (from mcp<2.0.0,>=1.8.0->google-adk) (2.11.0)\r\n",
+      "Requirement already satisfied: pyjwt>=2.10.1 in /usr/local/lib/python3.11/dist-packages (from pyjwt[crypto]>=2.10.1->mcp<2.0.0,>=1.8.0->google-adk) (2.10.1)\r\n",
+      "Requirement already satisfied: python-multipart>=0.0.9 in /usr/local/lib/python3.11/dist-packages (from mcp<2.0.0,>=1.8.0->google-adk) (0.0.20)\r\n",
+      "Requirement already satisfied: sse-starlette>=1.6.1 in /usr/local/lib/python3.11/dist-packages (from mcp<2.0.0,>=1.8.0->google-adk) (3.0.3)\r\n",
+      "Requirement already satisfied: importlib-metadata<8.8.0,>=6.0 in /usr/local/lib/python3.11/dist-packages (from opentelemetry-api<=1.37.0,>=1.37.0->google-adk) (8.7.0)\r\n",
+      "Requirement already satisfied: google-cloud-monitoring~=2.0 in /usr/local/lib/python3.11/dist-packages (from opentelemetry-exporter-gcp-monitoring<2.0.0,>=1.9.0a0->google-adk) (2.28.0)\r\n",
+      "Requirement already satisfied: googleapis-common-protos~=1.52 in /usr/local/lib/python3.11/dist-packages (from opentelemetry-exporter-otlp-proto-http>=1.36.0->google-adk) (1.70.0)\r\n",
+      "Requirement already satisfied: opentelemetry-exporter-otlp-proto-common==1.37.0 in /usr/local/lib/python3.11/dist-packages (from opentelemetry-exporter-otlp-proto-http>=1.36.0->google-adk) (1.37.0)\r\n",
+      "Requirement already satisfied: opentelemetry-proto==1.37.0 in /usr/local/lib/python3.11/dist-packages (from opentelemetry-exporter-otlp-proto-http>=1.36.0->google-adk) (1.37.0)\r\n",
+      "Requirement already satisfied: opentelemetry-semantic-conventions==0.58b0 in /usr/local/lib/python3.11/dist-packages (from opentelemetry-sdk<=1.37.0,>=1.37.0->google-adk) (0.58b0)\r\n",
+      "Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.11/dist-packages (from pydantic<3.0.0,>=2.0->google-adk) (0.7.0)\r\n",
+      "Requirement already satisfied: pydantic-core==2.41.5 in /usr/local/lib/python3.11/dist-packages (from pydantic<3.0.0,>=2.0->google-adk) (2.41.5)\r\n",
+      "Requirement already satisfied: typing-inspection>=0.4.2 in /usr/local/lib/python3.11/dist-packages (from pydantic<3.0.0,>=2.0->google-adk) (0.4.2)\r\n",
+      "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.11/dist-packages (from python-dateutil<3.0.0,>=2.9.0.post0->google-adk) (1.17.0)\r\n",
+      "Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.11/dist-packages (from requests<3.0.0,>=2.32.4->google-adk) (3.4.4)\r\n",
+      "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.11/dist-packages (from requests<3.0.0,>=2.32.4->google-adk) (2.5.0)\r\n",
+      "Requirement already satisfied: greenlet>=1 in /usr/local/lib/python3.11/dist-packages (from sqlalchemy<3.0.0,>=2.0->google-adk) (3.2.3)\r\n",
+      "Requirement already satisfied: alembic in /usr/local/lib/python3.11/dist-packages (from sqlalchemy-spanner>=1.14.0->google-adk) (1.17.1)\r\n",
+      "Requirement already satisfied: grpcio-status<2.0.0,>=1.33.2 in /usr/local/lib/python3.11/dist-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,<3.0.0,>=1.34.1->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (1.71.2)\r\n",
+      "Requirement already satisfied: google-cloud-appengine-logging<2.0.0,>=0.1.3 in /usr/local/lib/python3.11/dist-packages (from google-cloud-logging<4->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (1.7.0)\r\n",
+      "Requirement already satisfied: google-cloud-audit-log<1.0.0,>=0.3.1 in /usr/local/lib/python3.11/dist-packages (from google-cloud-logging<4->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (0.4.0)\r\n",
+      "Requirement already satisfied: pyparsing!=3.0.0,!=3.0.1,!=3.0.2,!=3.0.3,<4,>=2.4.2 in /usr/local/lib/python3.11/dist-packages (from httplib2<1.0.0,>=0.19.0->google-api-python-client<3.0.0,>=2.157.0->google-adk) (3.0.9)\r\n",
+      "Requirement already satisfied: zipp>=3.20 in /usr/local/lib/python3.11/dist-packages (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api<=1.37.0,>=1.37.0->google-adk) (3.23.0)\r\n",
+      "Requirement already satisfied: pyasn1<0.7.0,>=0.6.1 in /usr/local/lib/python3.11/dist-packages (from pyasn1-modules>=0.2.1->google-auth<3.0.0,>=2.14.1->google-genai) (0.6.1)\r\n",
+      "Requirement already satisfied: cffi>=2.0.0 in /usr/local/lib/python3.11/dist-packages (from cryptography->authlib<2.0.0,>=1.5.1->google-adk) (2.0.0)\r\n",
+      "Requirement already satisfied: numpy>=1.21 in /usr/local/lib/python3.11/dist-packages (from shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (1.26.4)\r\n",
+      "Requirement already satisfied: Mako in /usr/local/lib/python3.11/dist-packages (from alembic->sqlalchemy-spanner>=1.14.0->google-adk) (1.3.10)\r\n",
+      "Requirement already satisfied: pycparser in /usr/local/lib/python3.11/dist-packages (from cffi>=2.0.0->cryptography->authlib<2.0.0,>=1.5.1->google-adk) (2.23)\r\n",
+      "Collecting protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<7.0.0,>=3.20.2 (from google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk)\r\n",
+      "  Downloading protobuf-5.29.5-cp38-abi3-manylinux2014_x86_64.whl.metadata (592 bytes)\r\n",
+      "Requirement already satisfied: mkl_fft in /usr/local/lib/python3.11/dist-packages (from numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (1.3.8)\r\n",
+      "Requirement already satisfied: mkl_random in /usr/local/lib/python3.11/dist-packages (from numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (1.2.4)\r\n",
+      "Requirement already satisfied: mkl_umath in /usr/local/lib/python3.11/dist-packages (from numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (0.1.1)\r\n",
+      "Requirement already satisfied: mkl in /usr/local/lib/python3.11/dist-packages (from numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (2025.3.0)\r\n",
+      "Requirement already satisfied: tbb4py in /usr/local/lib/python3.11/dist-packages (from numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (2022.3.0)\r\n",
+      "Requirement already satisfied: mkl-service in /usr/local/lib/python3.11/dist-packages (from numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (2.4.1)\r\n",
+      "Requirement already satisfied: MarkupSafe>=0.9.2 in /usr/local/lib/python3.11/dist-packages (from Mako->alembic->sqlalchemy-spanner>=1.14.0->google-adk) (3.0.3)\r\n",
+      "Requirement already satisfied: onemkl-license==2025.3.0 in /usr/local/lib/python3.11/dist-packages (from mkl->numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (2025.3.0)\r\n",
+      "Requirement already satisfied: intel-openmp<2026,>=2024 in /usr/local/lib/python3.11/dist-packages (from mkl->numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (2024.2.0)\r\n",
+      "Requirement already satisfied: tbb==2022.* in /usr/local/lib/python3.11/dist-packages (from mkl->numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (2022.3.0)\r\n",
+      "Requirement already satisfied: tcmlib==1.* in /usr/local/lib/python3.11/dist-packages (from tbb==2022.*->mkl->numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (1.4.0)\r\n",
+      "Requirement already satisfied: intel-cmplr-lib-rt in /usr/local/lib/python3.11/dist-packages (from mkl_umath->numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (2024.2.0)\r\n",
+      "Requirement already satisfied: intel-cmplr-lib-ur==2024.2.0 in /usr/local/lib/python3.11/dist-packages (from intel-openmp<2026,>=2024->mkl->numpy>=1.21->shapely<3.0.0->google-cloud-aiplatform<2.0.0,>=1.125.0->google-cloud-aiplatform[agent-engines]<2.0.0,>=1.125.0->google-adk) (2024.2.0)\r\n",
+      "Downloading google_adk-1.19.0-py3-none-any.whl (2.3 MB)\r\n",
+      "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m2.3/2.3 MB\u001b[0m \u001b[31m32.0 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\r\n",
+      "\u001b[?25hDownloading google_genai-1.52.0-py3-none-any.whl (261 kB)\r\n",
+      "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m261.2/261.2 kB\u001b[0m \u001b[31m15.5 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\r\n",
+      "\u001b[?25hDownloading google_cloud_bigquery_storage-2.34.0-py3-none-any.whl (295 kB)\r\n",
+      "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m295.7/295.7 kB\u001b[0m \u001b[31m13.4 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\r\n",
+      "\u001b[?25hDownloading cachetools-5.5.2-py3-none-any.whl (10 kB)\r\n",
+      "Downloading protobuf-5.29.5-cp38-abi3-manylinux2014_x86_64.whl (319 kB)\r\n",
+      "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m319.9/319.9 kB\u001b[0m \u001b[31m16.6 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\r\n",
+      "\u001b[?25hInstalling collected packages: protobuf, cachetools, google-genai, google-cloud-bigquery-storage, google-adk\r\n",
+      "  Attempting uninstall: protobuf\r\n",
+      "    Found existing installation: protobuf 6.33.0\r\n",
+      "    Uninstalling protobuf-6.33.0:\r\n",
+      "      Successfully uninstalled protobuf-6.33.0\r\n",
+      "  Attempting uninstall: cachetools\r\n",
+      "    Found existing installation: cachetools 6.2.1\r\n",
+      "    Uninstalling cachetools-6.2.1:\r\n",
+      "      Successfully uninstalled cachetools-6.2.1\r\n",
+      "  Attempting uninstall: google-genai\r\n",
+      "    Found existing installation: google-genai 1.48.0\r\n",
+      "    Uninstalling google-genai-1.48.0:\r\n",
+      "      Successfully uninstalled google-genai-1.48.0\r\n",
+      "  Attempting uninstall: google-adk\r\n",
+      "    Found existing installation: google-adk 1.18.0\r\n",
+      "    Uninstalling google-adk-1.18.0:\r\n",
+      "      Successfully uninstalled google-adk-1.18.0\r\n",
+      "\u001b[31mERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\r\n",
+      "google-cloud-translate 3.12.1 requires protobuf!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<5.0.0dev,>=3.19.5, but you have protobuf 5.29.5 which is incompatible.\r\n",
+      "ray 2.51.1 requires click!=8.3.0,>=7.0, but you have click 8.3.0 which is incompatible.\r\n",
+      "bigframes 2.12.0 requires rich<14,>=12.4.4, but you have rich 14.2.0 which is incompatible.\r\n",
+      "pydrive2 1.21.3 requires cryptography<44, but you have cryptography 46.0.3 which is incompatible.\r\n",
+      "pydrive2 1.21.3 requires pyOpenSSL<=24.2.1,>=19.1.0, but you have pyopenssl 25.3.0 which is incompatible.\r\n",
+      "gcsfs 2025.3.0 requires fsspec==2025.3.0, but you have fsspec 2025.10.0 which is incompatible.\u001b[0m\u001b[31m\r\n",
+      "\u001b[0mSuccessfully installed cachetools-5.5.2 google-adk-1.19.0 google-cloud-bigquery-storage-2.34.0 google-genai-1.52.0 protobuf-5.29.5\r\n"
+     ]
+    }
+   ],
+   "source": [
+    "!pip install -U google-adk google-genai\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f2178745",
+   "metadata": {
+    "papermill": {
+     "duration": 0.00644,
+     "end_time": "2025-11-30T09:11:40.704967",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:40.698527",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# --**IMPORTS**--"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "f36c2750",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-30T09:11:40.719638Z",
+     "iopub.status.busy": "2025-11-30T09:11:40.719248Z",
+     "iopub.status.idle": "2025-11-30T09:11:46.277151Z",
+     "shell.execute_reply": "2025-11-30T09:11:46.276069Z"
+    },
+    "papermill": {
+     "duration": 5.567317,
+     "end_time": "2025-11-30T09:11:46.278730",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:40.711413",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "✅ ADK components imported successfully.\n"
+     ]
+    }
+   ],
+   "source": [
+    "from google.adk.agents import Agent, SequentialAgent, ParallelAgent, LoopAgent\n",
+    "from google.adk.models.google_llm import Gemini\n",
+    "from google.adk.runners import InMemoryRunner\n",
+    "from google.adk.tools import AgentTool, FunctionTool, google_search\n",
+    "from google.genai import types\n",
+    "\n",
+    "print(\"✅ ADK components imported successfully.\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "e05019ae",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-30T09:11:46.296666Z",
+     "iopub.status.busy": "2025-11-30T09:11:46.295414Z",
+     "iopub.status.idle": "2025-11-30T09:11:46.300928Z",
+     "shell.execute_reply": "2025-11-30T09:11:46.299813Z"
+    },
+    "papermill": {
+     "duration": 0.016949,
+     "end_time": "2025-11-30T09:11:46.302515",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.285566",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import warnings\n",
+    "\n",
+    "# Add this line to the very top of your execution script\n",
+    "warnings.filterwarnings(\"ignore\", \"there are non-text parts in the response\") "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "aed4f877",
+   "metadata": {
+    "papermill": {
+     "duration": 0.006443,
+     "end_time": "2025-11-30T09:11:46.316027",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.309584",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# --**API Key**--"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "a2713f12",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-30T09:11:46.330650Z",
+     "iopub.status.busy": "2025-11-30T09:11:46.330327Z",
+     "iopub.status.idle": "2025-11-30T09:11:46.334925Z",
+     "shell.execute_reply": "2025-11-30T09:11:46.334016Z"
+    },
+    "papermill": {
+     "duration": 0.013581,
+     "end_time": "2025-11-30T09:11:46.336452",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.322871",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import os\n",
+    "os.environ[\"GOOGLE_API_KEY\"] = \"AIzaSyBX4h5jldtdwq48u7Y8L5o43pMCBr1JCck\"\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e631bf8e",
+   "metadata": {
+    "papermill": {
+     "duration": 0.006572,
+     "end_time": "2025-11-30T09:11:46.350683",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.344111",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# --**Retry Config**--"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "ca278627",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-30T09:11:46.366191Z",
+     "iopub.status.busy": "2025-11-30T09:11:46.365169Z",
+     "iopub.status.idle": "2025-11-30T09:11:46.370238Z",
+     "shell.execute_reply": "2025-11-30T09:11:46.369483Z"
+    },
+    "papermill": {
+     "duration": 0.013961,
+     "end_time": "2025-11-30T09:11:46.371531",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.357570",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "retry_config=types.HttpRetryOptions(\n",
+    "    attempts=5,  # Maximum retry attempts\n",
+    "    exp_base=7,  # Delay multiplier\n",
+    "    initial_delay=1,\n",
+    "    http_status_codes=[429, 500, 503, 504], # Retry on these HTTP errors\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "979c0b84",
+   "metadata": {
+    "papermill": {
+     "duration": 0.006605,
+     "end_time": "2025-11-30T09:11:46.384848",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.378243",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# --**SUB AGENTS**--"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "352692ac",
+   "metadata": {
+    "papermill": {
+     "duration": 0.006866,
+     "end_time": "2025-11-30T09:11:46.399010",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.392144",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "**1. Claim Extractor**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "1ee90e88",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-30T09:11:46.413541Z",
+     "iopub.status.busy": "2025-11-30T09:11:46.412742Z",
+     "iopub.status.idle": "2025-11-30T09:11:46.418438Z",
+     "shell.execute_reply": "2025-11-30T09:11:46.417632Z"
+    },
+    "papermill": {
+     "duration": 0.014426,
+     "end_time": "2025-11-30T09:11:46.419771",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.405345",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "✅ claim_extractor created with output_key.\n"
+     ]
+    }
+   ],
+   "source": [
+    "claim_extractor = Agent(\n",
+    "    name=\"ClaimExtractor\",\n",
+    "    instruction=\"Extract key factual claims from the input text and present them as a clean list of bullet points.\",\n",
+    "    model=Gemini(\n",
+    "        model=\"gemini-2.5-flash-lite\",\n",
+    "        retry_options=retry_config\n",
+    "    ),\n",
+    "    tools=[google_search],\n",
+    "    # ADDED: Output key for storing results in session state, mirroring ResearchAgent's structure.\n",
+    "    output_key=\"claim_extraction_results\", \n",
+    ")\n",
+    "\n",
+    "print(\"✅ claim_extractor created with output_key.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c5f1494f",
+   "metadata": {
+    "papermill": {
+     "duration": 0.00631,
+     "end_time": "2025-11-30T09:11:46.432730",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.426420",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "**2. Fact Checker** "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "70aae0bb",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-30T09:11:46.447243Z",
+     "iopub.status.busy": "2025-11-30T09:11:46.446546Z",
+     "iopub.status.idle": "2025-11-30T09:11:46.452494Z",
+     "shell.execute_reply": "2025-11-30T09:11:46.451467Z"
+    },
+    "papermill": {
+     "duration": 0.015063,
+     "end_time": "2025-11-30T09:11:46.454238",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.439175",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "✅ fact_checker created with output_keys.\n"
+     ]
+    }
+   ],
+   "source": [
+    "fact_checker = Agent(\n",
+    "    name=\"FactChecker\",\n",
+    "    description=\"Fact-check claims\",\n",
+    "    instruction=\"Fact-check the provided claims using reasoning and internet search.\",\n",
+    "    model=Gemini(\n",
+    "        model=\"gemini-2.5-flash\",\n",
+    "        retry_options=retry_config\n",
+    "    ),\n",
+    "    tools=[google_search],\n",
+    "    output_key=\"fact_check_report\", # ADDED: Output key for session state\n",
+    ")\n",
+    "print(\"✅ fact_checker created with output_keys.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "996cc20b",
+   "metadata": {
+    "papermill": {
+     "duration": 0.006677,
+     "end_time": "2025-11-30T09:11:46.467669",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.460992",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "**3. News Summary agent** "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "be2d9eb5",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-30T09:11:46.487789Z",
+     "iopub.status.busy": "2025-11-30T09:11:46.486897Z",
+     "iopub.status.idle": "2025-11-30T09:11:46.494831Z",
+     "shell.execute_reply": "2025-11-30T09:11:46.493634Z"
+    },
+    "papermill": {
+     "duration": 0.018694,
+     "end_time": "2025-11-30T09:11:46.497020",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.478326",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "✅ News_agent created with output_keys.\n"
+     ]
+    }
+   ],
+   "source": [
+    "# News Summary Agent: Fetch and summarize technology/startup news.\n",
+    "news_agent = Agent(\n",
+    "    name=\"NewsSummaryAgent\",\n",
+    "    description=\"Fetch and summarize technology/startup news\",\n",
+    "    instruction=\"Search and summarize technology & startup news for the given period.\",\n",
+    "    model=Gemini(\n",
+    "        model=\"gemini-2.5-flash\",\n",
+    "        retry_options=retry_config\n",
+    "    ),\n",
+    "    tools=[google_search],\n",
+    "    output_key=\"news_summary_results\", # ADDED: Output key for session state\n",
+    ")\n",
+    "\n",
+    "print(\"✅ News_agent created with output_keys.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4e9a14c3",
+   "metadata": {
+    "papermill": {
+     "duration": 0.008791,
+     "end_time": "2025-11-30T09:11:46.516746",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.507955",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# --**ROOT AGENT**--"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "f9ddc81b",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-30T09:11:46.535181Z",
+     "iopub.status.busy": "2025-11-30T09:11:46.534559Z",
+     "iopub.status.idle": "2025-11-30T09:11:46.541136Z",
+     "shell.execute_reply": "2025-11-30T09:11:46.540206Z"
+    },
+    "papermill": {
+     "duration": 0.016758,
+     "end_time": "2025-11-30T09:11:46.542960",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.526202",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "✅ root_agent created with output_key.\n"
+     ]
+    }
+   ],
+   "source": [
+    "root_agent = Agent(\n",
+    "    name=\"StartupIntelligenceRoot\",\n",
+    "    description=\"Master agent coordinating claim extraction, fact-checking, and news summary.\",\n",
+    "    instruction=\"\"\"\n",
+    "You will coordinate all the sub-agents in the following sequence:\n",
+    "\n",
+    "1. Send the user text to ClaimExtractor to extract claims.\n",
+    "2. Send extracted claims to FactChecker.\n",
+    "3. Ask NewsSummaryAgent for news for the requested period.\n",
+    "4. Combine responses into a detailed final report.\n",
+    "\"\"\",\n",
+    "    model=Gemini(\n",
+    "        model=\"gemini-2.5-flash\",\n",
+    "        retry_options=retry_config\n",
+    "    ),\n",
+    "   tools=[AgentTool(claim_extractor), AgentTool(fact_checker), AgentTool(news_agent)],\n",
+    ")\n",
+    "\n",
+    "print(\"✅ root_agent created with output_key.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "656c6b2e",
+   "metadata": {
+    "papermill": {
+     "duration": 0.00901,
+     "end_time": "2025-11-30T09:11:46.562795",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.553785",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# --**RUNNER**--"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "c60ace92",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-30T09:11:46.579547Z",
+     "iopub.status.busy": "2025-11-30T09:11:46.579220Z",
+     "iopub.status.idle": "2025-11-30T09:12:06.015476Z",
+     "shell.execute_reply": "2025-11-30T09:12:06.014551Z"
+    },
+    "papermill": {
+     "duration": 19.445639,
+     "end_time": "2025-11-30T09:12:06.017113",
+     "exception": false,
+     "start_time": "2025-11-30T09:11:46.571474",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      " ### Created new session: debug_session_id\n",
+      "\n",
+      "User > I want to start a toy business .. what will be it's status by 2030 and how can we improve it\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "Warning: there are non-text parts in the response: ['function_call'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.\n"
+     ]
+    }
+   ],
+   "source": [
+    "runner = InMemoryRunner(agent=root_agent)\n",
+    "response = await runner.run_debug(\n",
+    "    \"I want to start a toy business .. what will be it's status by 2030 and how can we improve it\"\n",
+    ")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kaggle": {
+   "accelerator": "none",
+   "dataSources": [],
+   "dockerImageVersionId": 31192,
+   "isGpuEnabled": false,
+   "isInternetEnabled": true,
+   "language": "python",
+   "sourceType": "notebook"
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.13"
+  },
+  "papermill": {
+   "default_parameters": {},
+   "duration": 42.556399,
+   "end_time": "2025-11-30T09:12:07.045132",
+   "environment_variables": {},
+   "exception": null,
+   "input_path": "__notebook__.ipynb",
+   "output_path": "__notebook__.ipynb",
+   "parameters": {},
+   "start_time": "2025-11-30T09:11:24.488733",
+   "version": "2.6.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
